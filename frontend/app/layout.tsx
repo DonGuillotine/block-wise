@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   creator: "ChainLearn",
   publisher: "ChainLearn",
   icons: {
-    icon: "/favicon.png",
+    icon: "/favicon.ico",
   }
 };
 

@@ -191,6 +191,66 @@ def generate_chapter_content(chapter_title, chapter_description, book_id):
 
     return response.generations[0].text
 
+def validate_and_correct_quiz_json(json_string):
+    try:
+        quiz_data = json.loads(json_string)
+
+        if not isinstance(quiz_data, list):
+            raise ValueError("Quiz data is not a list")
+
+        corrected_quiz_data = []
+        for i, question in enumerate(quiz_data[:5]):  
+            corrected_question = {
+                "question": question.get("question", f"Question {i+1}"),
+                "options": [],
+                "correct_answer": ""
+            }
+            
+            options = question.get("options", [])
+            for j, option in enumerate(options[:4]):  
+                letter = chr(65 + j)  
+                corrected_option = re.sub(r'^[A-D]\.\s*', '', option)
+                corrected_question["options"].append(f"{letter}. {corrected_option}")
+         
+            while len(corrected_question["options"]) < 4:
+                letter = chr(65 + len(corrected_question["options"]))
+                corrected_question["options"].append(f"{letter}. Option {letter}")
+
+            correct_answer = question.get("correct_answer", "A")
+            if correct_answer not in ["A", "B", "C", "D"]:
+                correct_answer = "A"
+            corrected_question["correct_answer"] = correct_answer
+            
+            corrected_quiz_data.append(corrected_question)
+
+        while len(corrected_quiz_data) < 5:
+            dummy_question = {
+                "question": f"Dummy Question {len(corrected_quiz_data) + 1}",
+                "options": [
+                    "A. Option A",
+                    "B. Option B",
+                    "C. Option C",
+                    "D. Option D"
+                ],
+                "correct_answer": "A"
+            }
+            corrected_quiz_data.append(dummy_question)
+        
+        return json.dumps(corrected_quiz_data, indent=2)
+    except json.JSONDecodeError:
+        print("Shit went down Lads")
+        # return json.dumps([
+        #     {
+        #         "question": f"Default Question {i+1}",
+        #         "options": [
+        #             "A. Option A",
+        #             "B. Option B",
+        #             "C. Option C",
+        #             "D. Option D"
+        #         ],
+        #         "correct_answer": "A"
+        #     } for i in range(5)
+        # ], indent=2)
 
 def generate_quiz(chapter_content):
     co = get_cohere_client()
@@ -199,29 +259,40 @@ def generate_quiz(chapter_content):
     Generate a quiz based on the following chapter content:
     {chapter_content}
     
-    Create 5 multiple-choice questions with 4 options each. Include the correct answer.
-    Format the output as JSON with the following structure:
+    Create exactly 5 multiple-choice questions with 4 options each. Include the correct answer.
+    Format the output as a valid JSON array with the following structure:
     [
-        {{"question": "...", "options": ["A. ...", "B. ...", "C. ...", "D. ..."], "correct_answer": "A"}},
-        ...
+        {{
+            "question": "Question text here?",
+            "options": [
+                "A. First option",
+                "B. Second option",
+                "C. Third option",
+                "D. Fourth option"
+            ],
+            "correct_answer": "A"
+        }},
+        // ... (4 more questions in the same format)
     ]
+    
+    Ensure that:
+    1. There are exactly 5 questions.
+    2. Each question has exactly 4 options.
+    3. Options are labeled A, B, C, and D.
+    4. The correct_answer field contains only A, B, C, or D.
+    5. The output is a valid JSON array.
     """
 
     response = co.generate(
         model='command-nightly',
         prompt=prompt,
-        max_tokens=1000,
+        max_tokens=1500,
         temperature=0.7,
         k=0,
         stop_sequences=[],
         return_likelihoods='NONE'
     )
 
-    # Parse the JSON response
-    try:
-        quiz_data = json.loads(response.generations[0].text)
-    except json.JSONDecodeError:
-        # If JSON parsing fails, return an empty list
-        quiz_data = []
-
-    return quiz_data
+    validated_quiz_json = validate_and_correct_quiz_json(response.generations[0].text)
+    
+    return json.loads(validated_quiz_json)

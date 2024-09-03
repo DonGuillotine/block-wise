@@ -31,7 +31,7 @@ export default function RootLayout({
   const initialState = cookieToInitialState(config, headers().get('cookie'))
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-clBodyBg w-full overflow-hidden`}>
+      <body className={`${inter.className} w-full overflow-hidden`}>
         <Providers>
           <AppKitProvider initialState={initialState}>{children}</AppKitProvider>
         </Providers>

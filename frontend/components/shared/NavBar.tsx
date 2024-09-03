@@ -20,7 +20,7 @@ const NavBar = () => {
     })
     return (
         <header className="w-full overflow-hidden">
-            <div className={`w-full h-20 lg:px-8 md:px-4 py-3 transition-all duration-150 bg-white rounded-xl`}>
+            <div className={`w-full h-20 lg:px-8 md:px-4 py-3 transition-all duration-150 bg-white rounded-3xl`}>
                 <MaxWrapper className="h-full w-full flex items-center justify-between">
                     <Logo href="/" classname="md:w-[150px] w-[110px]" image={logo} />
 

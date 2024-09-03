@@ -8,7 +8,7 @@ export default function GuestLayout({
 }>) {
 
     return (
-        <section className="w-full">
+        <section className="w-full bg-clBodyBg min-h-screen">
             <NavBar />
             <main className="w-full">{children}</main>
             <Footer />

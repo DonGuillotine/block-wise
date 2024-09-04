@@ -1,16 +1,18 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "../interfaces/IERC20.sol";
-import "../interfaces/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
-contract ChainLearn {
-    IERC20 public IToken;
-    IERC721 public INFT;
+contract ChainLearn is ERC721 {
+    IERC20 IToken;
 
-    constructor(address _tokenAddress, address _nftAddress) {
+    uint256 private _nextTokenId;
+
+    constructor(
+        address _tokenAddress
+    ) ERC721("ChainLearnCert", "CLC") {
         IToken = IERC20(_tokenAddress);
-        INFT = IERC721(_nftAddress);
     }
 
     struct Course {
@@ -46,6 +48,8 @@ contract ChainLearn {
         address indexed User,
         uint256 Score
     );
+
+    event CertificatMinted(address indexed Student);
 
     function createCourse(
         uint256 _id,
@@ -104,8 +108,72 @@ contract ChainLearn {
             "You have not paid for this course"
         );
 
-        IToken.publicMint(msg.sender);
+        IToken.mint(msg.sender, 1);
+
+        userCourseTokens[msg.sender][_id] =
+            userCourseTokens[msg.sender][_id] +
+            1;
 
         emit ChapterTokenMinted(_id, msg.sender, _score);
+    }
+
+    // function mintNFTCert(uint256 _id) external {
+    //     require(
+    //         paidAmount[msg.sender] > 0,
+    //         "You have not paid for this course"
+    //     );
+
+    //     Course storage course = courses[_id];
+
+    //     uint256 userToken = userCourseTokens[msg.sender][_id];
+    //     uint256 requredToken = course.Number_Of_Chapters;
+
+    //     require(userToken == requredToken, "Course Not Completed");
+
+    //     emit CertificatMinted(msg.sender);
+    // }
+
+    function safeMint(address to, uint256 _id) public {
+        require(
+            paidAmount[msg.sender] > 0,
+            "You have not paid for this course"
+        );
+
+        Course storage course = courses[_id];
+
+        uint256 userToken = userCourseTokens[msg.sender][_id];
+        uint256 requredToken = course.Number_Of_Chapters;
+
+        require(userToken == requredToken, "Course Not Completed");
+
+        uint256 tokenId = _nextTokenId++;
+
+        _safeMint(to, tokenId);
+
+        emit CertificatMinted(msg.sender);
+    }
+
+    function tokenAddress() external view returns (address) {
+        return address(IToken);
+    }
+
+    function viewUserCourseToken(
+        address _student,
+        uint256 _id
+    ) external view returns (uint256) {
+        return userCourseTokens[_student][_id];
+    }
+
+    function viewCourseRequiredToken(
+        uint256 _id
+    ) external view returns (uint256) {
+        Course storage course = courses[_id];
+        return course.Number_Of_Chapters;
+    }
+
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC721) returns (bool) {
+        return super.supportsInterface(interfaceId);
     }
 }

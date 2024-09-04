@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v5.0.0) (token/ERC20/IERC20.sol)
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 /**
  * @dev Interface of the ERC20 standard as defined in the EIP.
@@ -88,5 +88,6 @@ interface IERC20 {
         uint256 value
     ) external returns (bool);
 
-    function publicMint(address to) external;
+    function mint(address _to, uint256 _amount) external;
+    function giveMinterRole(address _to) external;
 }

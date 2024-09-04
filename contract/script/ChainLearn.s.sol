@@ -6,18 +6,18 @@ import {ChainLearn} from "../src/ChainLearn.sol";
 import {Token} from "../src/Token.sol";
 // import {NFT} from "../src/NFT.sol";
 
-contract CounterScript is Script {
+contract ChainLearnScript is Script {
     ChainLearn public learn;
     Token public token;
 
     function setUp() public {}
 
     function run() public {
-        vm.startBroadcast();
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
 
-        token = new Token(msg.sender);
+        token = new Token();
 
-        learn = new ChainLearn(address(token), address(0x02));
+        learn = new ChainLearn(address(token));
 
         vm.stopBroadcast();
     }

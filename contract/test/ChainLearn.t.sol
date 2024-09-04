@@ -8,24 +8,32 @@ import "../src/NFT.sol";
 
 contract ChainLeanTest is Test {
     ChainLearn public learn;
-
+    NFT public nft;
     Token public token;
 
-    address owner = address(0x01);
+    address owner = 0x2fd1AFA939eFD359a302D757740d6eC15b820bC2;
+    address student1 = 0x4931b524640BCaEB2c94BF9fb395BDE200b2fC11;
+
+    address ChainLearnCA;
 
     function setUp() public {
         vm.startPrank(owner);
 
-        token = new Token(owner);
+        token = new Token();
         // nft = new NFT();
-        learn = new ChainLearn(address(token), address(0x01));
+        learn = new ChainLearn(address(token));
+        ChainLearnCA = address(learn);
+
+        nft = new NFT(address(learn));
     }
 
     function test_Add_Course() public {
-        token.mint(address(0x02), 100);
+        // token.giveMinterRole(address(learn));
+
+        token.mint(student1, 100);
 
         vm.stopPrank();
-        vm.startPrank(address(0x02));
+        vm.startPrank(student1);
 
         token.approve(address(learn), 100);
 
@@ -39,7 +47,7 @@ contract ChainLeanTest is Test {
             title,
             description,
             number_of_chapters,
-            address(0x2),
+            student1,
             50
         );
     }
@@ -62,5 +70,27 @@ contract ChainLeanTest is Test {
     function test_Mint_Chapter_Token() public {
         test_Add_Course();
         learn.mintChapterToken(1, 51);
+    }
+
+    function test_Student_Token() public {
+        test_Add_Course();
+        learn.mintChapterToken(1, 51);
+        learn.mintChapterToken(1, 51);
+        learn.mintChapterToken(1, 51);
+
+        learn.viewUserCourseToken(student1, 1);
+        learn.viewCourseRequiredToken(1);
+    }
+
+    function test_Mint_Certificate() public {
+        test_Add_Course();
+        learn.mintChapterToken(1, 51);
+        learn.mintChapterToken(1, 51);
+        learn.mintChapterToken(1, 51);
+        // learn.mintNFTCert(1);
+    }
+
+    function test_IToken() public view {
+        learn.tokenAddress();
     }
 }

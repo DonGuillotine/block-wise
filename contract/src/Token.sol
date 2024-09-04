@@ -1,23 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+// Compatible with OpenZeppelin Contracts ^5.0.0
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Token is ERC20, ERC20Burnable, Ownable {
-    constructor(
-        address initialOwner
-    ) ERC20("ChainLearn", "CLN") Ownable(initialOwner) {}
+contract Token is ERC20 {
+    constructor() ERC20("ChainLearn", "CLN") {}
 
-    event UserMinted(address indexed user, uint256 amount);
-
-    function mint(address to, uint256 amount) public onlyOwner {
+    function mint(address to, uint256 amount) public {
         _mint(to, amount);
-    }
-    function publicMint(address to) external {
-        _mint(to, 1);
-
-        emit UserMinted(to, 1);
     }
 }

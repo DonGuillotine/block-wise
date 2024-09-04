@@ -1,0 +1,6 @@
+ChainLeanTest:test_Add_Course() (gas: 255744)
+ChainLeanTest:test_Get_Course() (gas: 260730)
+ChainLeanTest:test_INFT() (gas: 7639)
+ChainLeanTest:test_IToken() (gas: 7760)
+ChainLeanTest:test_Mint_Chapter_Token() (gas: 263562)
+ChainLeanTest:test_Update_Course() (gas: 310850)

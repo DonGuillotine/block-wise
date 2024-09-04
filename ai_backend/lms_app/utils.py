@@ -132,6 +132,7 @@ def generate_course_outline(user_data):
         return_likelihoods='NONE'
     )
     print(f"The original response here: {response.generations[0].text}")
+    print(f"Cohere Version is {cohere.__version__}")
 
     # Parse the JSON response
     try:

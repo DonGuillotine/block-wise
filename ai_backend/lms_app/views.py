@@ -105,12 +105,14 @@ class CourseGenerate(APIView):
                         quiz_data = []
 
                 for question_data in quiz_data:
-                    Quiz.objects.create(
+                    quiz = Quiz.objects.create(
                         course=course,
                         chapter_number=i,
                         question=question_data.get('question', ''),
                         correct_answer=question_data.get('correct_answer', '')
                     )
+                    quiz.set_options(question_data.get('options', []))
+                    quiz.save()
 
             course.save()
             return self.return_first_chapter_and_quiz(course)

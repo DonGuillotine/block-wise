@@ -4,18 +4,16 @@ import hero1 from "@/public/home/1.png"
 import hero2 from "@/public/home/2.png"
 import hero3 from "@/public/home/3.png"
 import Image from 'next/image'
-
-
 const HeroSection = () => {
     return (
         <section className='w-full bg-clPrimary py-16'>
             <MaxWrapper className='grid md:grid-cols-2 md:gap-16 gap-8 md:px-12 px-4'>
                 {/* text */}
                 <div className='w-full flex flex-col items-start justify-center md:gap-6 gap-4 order-2 md:order-1'>
-                    <h1 className='md:text-6xl text-4xl font-semibold text-gray-200 tracking-wide '>Learn and Thrive with <span className='text-clSecondary'>AI-Powered</span> Courses.</h1>
+                    <h1 className='md:text-6xl text-4xl font-semibold text-gray-200 tracking-wide '>Unlock Your Potential with <span className='text-clSecondary'>ChainLearn.</span>.</h1>
                     <p className='text-gray-300 text-lg'>A decentralized learning platform where knowledge is rewarded with NFTs. Advance by mastering your skills, or retake courses to perfect them.</p>
                     <button type='button' className='bg-clSecondary px-8 py-3 text-clPrimary rounded'>
-                        Explore courses
+                        Get Started
                     </button>
                 </div>
 

@@ -34,12 +34,14 @@ const NavBar = () => {
                     </div>
 
                     <div className="flex items-center justify-end gap-3">
-                        <button
+                        {/* <button
                             type="button"
                             className="text-clSecondary md:px-8 px-6 py-2.5 font-medium text-sm bg-clPrimary rounded-[10px]"
                         >
                             Connect Wallet
-                        </button>
+                        </button> */}
+
+                        <w3m-button />
 
 
                         <div className="md:hidden">

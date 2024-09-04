@@ -13,7 +13,7 @@ const OurProcess = () => {
                 <main className='flex flex-col gap-10'>
                     <h1 className='md:text-4xl text-3xl font-semibold text-clPrimary tracking-wide text-center'>Our Process Workflow</h1>
 
-                    <div className='w-full grid grid-cols-2 gap-10'>
+                    <div className='w-full grid md:grid-cols-2 gap-10'>
                         <ol className="relative border-s border-clPrimary">
                             <li className="mb-10 ms-6">
                                 <span className="absolute flex items-center justify-center w-6 h-6 bg-white rounded-full -start-3 ring-8 ring-white">

@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react'
 import MaxWrapper from './MaxWrapper'
 import Logo from './Logo'
 import Link from 'next/link'
-import logo from "../../public/logo-blue.png"
+import logoBlue from "@/public/logo-blue.png"
+import logoWhite from "@/public/logo-white.png"
 import { usePathname } from 'next/navigation'
 
 const NavBar = () => {
@@ -22,7 +23,7 @@ const NavBar = () => {
         <header className="w-full overflow-hidden">
             <div className={`w-full h-20 lg:px-8 md:px-4 py-3 transition-all duration-150 bg-white rounded-3xl`}>
                 <MaxWrapper className="h-full w-full flex items-center justify-between">
-                    <Logo href="/" classname="md:w-[150px] w-[110px]" image={logo} />
+                    <Logo href="/" classname="md:w-[150px] w-[120px]" image={logoBlue} />
 
                     <div className="hidden md:flex h-full items-center gap-7 justify-center">
                         {navLinks.map((link) => (
@@ -55,7 +56,7 @@ const NavBar = () => {
                         <div className={`fixed top-0 z-[99] w-full h-[100dvh] bg-clSecondary transition-all duration-[500ms] ease-[cubic-bezier(0.86,0,0.07,1)] lg:hidden flex justify-end ${showMobileNav ? "left-0" : "left-[100%]"}`}>
                             <div className={`w-[80%] h-full bg-clPrimary flex flex-col gap-10 transition-all duration-[500ms] ease-[cubic-bezier(0.86,0,0.07,1)] px-8 py-8 delay-300 ${showMobileNav ? "translate-x-0" : "translate-x-full"}`}>
                                 <header className="flex justify-between items-center w-full">
-                                    <Logo href="/" classname="w-[120px]" image={logo} />
+                                    <Logo href="/" classname="w-[120px]" image={logoWhite} />
                                     <button type="button" className="text-2xl text-white" onClick={() => setShowMobileNav(false)}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />

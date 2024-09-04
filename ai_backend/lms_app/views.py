@@ -86,9 +86,13 @@ class CourseGenerate(APIView):
             # Generate chapter content
             chapters = course_info.get('chapters', [])
             for i, chapter_data in enumerate(chapters, start=1):
-                chapter = chapter_data.get(f'chapter_{i}', {})
-                chapter_title = chapter.get('title', '')
-                chapter_description = chapter.get('description', '')
+                chapter_title = chapter_data.get('title', '')
+                chapter_description = chapter_data.get('description', '')
+
+                # Printing for debugging purposes
+                print(f"Here's your stuff {chapter_title}, {chapter_description}, {book.id}")
+
+                # Generate content for the chapter
                 chapter_content = generate_chapter_content(chapter_title, chapter_description, book.id)
                 setattr(course, f'chapter_{i}', chapter_content)
 
@@ -109,10 +113,47 @@ class CourseGenerate(APIView):
                     )
 
             course.save()
-            return Response(CourseSerializer(course).data, status=status.HTTP_201_CREATED)
+            return self.return_first_chapter_and_quiz(course)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         
+    def return_first_chapter_and_quiz(self, course):
+        chapter_number = 1
+        chapter_content = CourseSerializer().get_chapter(course, chapter_number)
+
+        quizzes = Quiz.objects.filter(course=course, chapter_number=chapter_number)
+        quiz_serializer = QuizSerializer(quizzes, many=True)
+
+        return Response({
+            "chapter_content": chapter_content,
+            "quizzes": quiz_serializer.data
+        }, status=status.HTTP_201_CREATED)
+        
+class RetrieveChapterAndQuiz(APIView):
+
+    def get(self, request, course_id, chapter_number):
+        # Get the course for the authenticated user
+        course = get_object_or_404(Course, id=course_id, user=request.user)
+
+        # Ensure chapter_number is within valid range
+        if chapter_number not in [1, 2, 3]:
+            return Response({"error": "Invalid chapter number."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Get the chapter content
+        chapter_content = CourseSerializer().get_chapter(course, chapter_number)
+        if not chapter_content:
+            return Response({"error": "Chapter content not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        # Get the quiz for the specified chapter
+        quizzes = Quiz.objects.filter(course=course, chapter_number=chapter_number)
+        quiz_serializer = QuizSerializer(quizzes, many=True)
+
+        # Return the chapter content along with the quiz
+        return Response({
+            "chapter_content": chapter_content,
+            "quizzes": quiz_serializer.data
+        }, status=status.HTTP_200_OK)
+    
         
 class QuizSubmit(APIView):
     @swagger_auto_schema(request_body=QuizSerializer)

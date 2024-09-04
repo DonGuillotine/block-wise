@@ -67,7 +67,10 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
-        fields = ['id', 'chapter_number', 'question', 'correct_answer', 'user_answer', 'is_correct']
+        fields = ['id', 'chapter_number', 'question', 'options', 'correct_answer', 'user_answer', 'is_correct']
+
+    def get_options(self, obj):
+        return obj.get_options()
 
 class CourseSerializer(serializers.ModelSerializer):
     quizzes = QuizSerializer(many=True, read_only=True)
@@ -75,6 +78,16 @@ class CourseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Course
         fields = ['id', 'user', 'title', 'description', 'chapter_1', 'chapter_2', 'chapter_3', 'created_at', 'quizzes']
+
+    def get_chapter(self, obj, chapter_number):
+        # Dynamically get the chapter content based on the chapter number
+        if chapter_number == 1:
+            return obj.chapter_1
+        elif chapter_number == 2:
+            return obj.chapter_2
+        elif chapter_number == 3:
+            return obj.chapter_3
+        return None
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:

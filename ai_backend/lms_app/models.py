@@ -1,4 +1,5 @@
 import os
+import json
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 from django.db import models
@@ -61,6 +62,7 @@ class Quiz(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='quizzes')
     chapter_number = models.PositiveSmallIntegerField()
     question = models.TextField()
+    options = models.TextField() 
     correct_answer = models.TextField()
     user_answer = models.TextField(null=True, blank=True)
     is_correct = models.BooleanField(null=True, blank=True)
@@ -68,6 +70,12 @@ class Quiz(models.Model):
 
     class Meta:
         unique_together = ('course', 'chapter_number', 'question')
+
+    def set_options(self, options):
+        self.options = json.dumps(options)
+
+    def get_options(self):
+        return json.loads(self.options)
 
     def __str__(self):
         return f"Quiz for {self.course.title} - Chapter {self.chapter_number}"

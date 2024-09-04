@@ -1,6 +1,6 @@
 # ChainLearn: Personalized Blockchain-Powered Learning Management System (LMS)
 
-Welcome to the repository for the **Personalized Blockchain-Powered Learning Management System (LMS)**! This project is built to revolutionize online education by combining the power of **Artificial Intelligence** (AI) and **Blockchain** technology to offer personalized, immersive, and incentivized learning experiences.
+Welcome to the repository for the **Personalized Blockchain-Powered Learning Management System (LMS)**! This project is built to revolutionize online education by combining the power of **Artificial Intelligence** (AI) and **Blockchain** technology to offer personalized, immersive, and incentivized learning experiences. This was built during the duration of the Web3Lagos Hackathon.
 
 ## 🚀 Project Overview
 
@@ -99,8 +99,11 @@ If you have any questions or feedback, feel free to reach out via [email](mailto
 
 ## 📧 Credits
 
-
-If you have any questions or feedback, feel free to reach out via [email](mailto:infect3dlab@gmail.com) or create an issue in this repository.
+This project wouldn't be possible without this excellent team!
+- [Abel Osaretin](https://github.com/AbelOsaretin)
+- [Signor Dev](https://github.com/Signor1)
+- [Donald Nwokoro](https://github.com/DonGuillotine)
+- [Oluwakemi Atoyebi](https://github.com/Khemmie-Ray)
 ---
 
 Happy Learning!  

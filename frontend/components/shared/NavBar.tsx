@@ -1,14 +1,17 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import MaxWrapper from './MaxWrapper'
 import Logo from './Logo'
 import Link from 'next/link'
 import logoBlue from "@/public/logo-blue.png"
 import logoWhite from "@/public/logo-white.png"
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { useAccount } from 'wagmi'
 
 const NavBar = () => {
     const [showMobileNav, setShowMobileNav] = useState(false)
+    const { isConnected } = useAccount()
+    const router = useRouter()
 
     const pathname = usePathname();
 
@@ -19,6 +22,17 @@ const NavBar = () => {
             document.body.style.overflow = "unset";
         }
     })
+
+    const change = useCallback(async () => {
+        if (isConnected) {
+            router.push('/setup');
+        }
+    }, [isConnected, router]);
+
+    useEffect(() => {
+        change();
+    }, [change, isConnected]);
+
     return (
         <header className="w-full overflow-hidden">
             <div className={`w-full h-20 lg:px-8 md:px-4 py-3 transition-all duration-150 bg-white rounded-3xl`}>
@@ -34,12 +48,6 @@ const NavBar = () => {
                     </div>
 
                     <div className="flex items-center justify-end gap-3">
-                        {/* <button
-                            type="button"
-                            className="text-clSecondary md:px-8 px-6 py-2.5 font-medium text-sm bg-clPrimary rounded-[10px]"
-                        >
-                            Connect Wallet
-                        </button> */}
 
                         <w3m-button />
 

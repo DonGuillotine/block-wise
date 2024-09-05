@@ -29,42 +29,37 @@ body {
   }
 }
 
-
-/* loader CSS */
 .loader {
-  height: 15px;
-  aspect-ratio: 6;
-  display: flex;
+  width: 40px;
+  aspect-ratio: 1;
+  --c: linear-gradient(#00FFFF 0 0);
+  --m: radial-gradient(farthest-side, #00FFFF 92%, #00FFFF);
+  background:
+    var(--c), var(--m),
+    var(--c), var(--m),
+    var(--c), var(--m);
+  background-size: 8px 15px, 8px 8px;
+  background-repeat: no-repeat;
+  animation: l14 1s infinite alternate;
 }
 
-.loader:before,
-.loader:after {
-  content: "";
-  flex: 1;
-  padding-left: calc(100%/6);
-  background: radial-gradient(closest-side at calc(100%/3) 50%, #00FFFF 90%, #00FFFF) 0/75% 100% content-box;
-  animation: l20 2s infinite;
-}
+@keyframes l14 {
 
-.loader:after {
-  --_s: -1;
-}
-
-@keyframes l20 {
-  0% {
-    transform: scale(var(--_s, 1)) translate(0) rotate(0)
+  0%,
+  10% {
+    background-position: 0 0, 0 100%, 50% 0, 50% 100%, 100% 0, 100% 100%
   }
 
-  25% {
-    transform: scale(var(--_s, 1)) translate(-25%) rotate(0)
+  33% {
+    background-position: 0 100%, 0 0, 50% 0, 50% 100%, 100% 0, 100% 100%
   }
 
-  50% {
-    transform: scale(var(--_s, 1)) translate(-25%) rotate(1turn)
+  66% {
+    background-position: 0 100%, 0 0, 50% 100%, 50% 0, 100% 0, 100% 100%
   }
 
-  75%,
+  90%,
   100% {
-    transform: scale(var(--_s, 1)) translate(0) rotate(1turn)
+    background-position: 0 100%, 0 0, 50% 100%, 50% 0, 100% 100%, 100% 0
   }
 }

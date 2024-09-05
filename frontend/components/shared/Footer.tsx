@@ -21,7 +21,7 @@ const Footer = () => {
                     </ul>
                 </div>
                 <hr className="my-6 border-gray-600 sm:mx-auto lg:my-8" />
-                <span className="block text-sm text-gray-300 sm:text-center">© 2023 Chainlearn. All Rights Reserved.</span>
+                <span className="block text-sm text-gray-300 sm:text-center">© 2024 Chainlearn. All Rights Reserved.</span>
             </div>
         </footer>
     )

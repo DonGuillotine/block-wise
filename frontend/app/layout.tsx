@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   creator: "ChainLearn",
   publisher: "ChainLearn",
   icons: {
-    icon: "/favicon.png",
+    icon: "/favicon.ico",
   }
 };
 
@@ -30,8 +30,8 @@ export default function RootLayout({
 }>) {
   const initialState = cookieToInitialState(config, headers().get('cookie'))
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${inter.className} w-full overflow-x-hidden`}>
         <Providers>
           <AppKitProvider initialState={initialState}>{children}</AppKitProvider>
         </Providers>

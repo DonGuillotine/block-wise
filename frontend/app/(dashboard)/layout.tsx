@@ -11,7 +11,10 @@ export default function GuestLayout({
     return (
         <section className="w-full bg-clBodyBg min-h-screen">
             <Header />
-            <main className="w-full">{children}</main>
+            <main className="w-full">
+
+                {children}
+            </main>
             <Footer />
         </section>
     );
